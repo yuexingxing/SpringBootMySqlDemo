@@ -48,11 +48,11 @@ public class UserController {
         user.setName(name);
         user.setAge(age);
 
-        userServiceImpl.insertUser(user);
+        boolean flag = userServiceImpl.insertUser(user);
 
         Map<String, Object> map = new HashMap<>();
         map.put("data", null);
-        map.put("success", 1);
+        map.put("success", flag ? 1 : 0);
         map.put("code", "1001");
 
         return map;
@@ -66,11 +66,11 @@ public class UserController {
         user.setName(name);
         user.setAge(age);
 
-        userServiceImpl.updateUser(user);
+        boolean flag = userServiceImpl.updateUser(user);
 
         Map<String, Object> map = new HashMap<>();
         map.put("data", null);
-        map.put("success", 1);
+        map.put("success", flag ? 1 : 0);
         map.put("code", "1001");
 
         return map;
