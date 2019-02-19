@@ -31,7 +31,7 @@
         girl
         <set>
             <if test="name!=null">name=#{name},</if>
-            <if test="age!=null">name=#{age}</if>
+            <if test="age!=null">age=#{age}</if>
         </set>
         WHERE
         id=#{id}
