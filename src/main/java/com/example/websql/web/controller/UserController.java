@@ -1,5 +1,6 @@
 package com.example.websql.web.controller;
 
+import com.example.websql.Res;
 import com.example.websql.entity.User;
 import com.example.websql.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,31 +19,31 @@ public class UserController {
 
     //查询所有数据
     @GetMapping(value = "/query_user")
-    public Map<String, Object> queryUser() {
+    public Res queryUser() {
 
         List<User> list = userServiceImpl.queryUser();
         Map<String, Object> map = new HashMap<>();
         map.put("data", list);
-        map.put("success", 1);
-        map.put("code", "1001");
 
-        return map;
+        Res res = new Res();
+        res.setData(map);
+        res.setSuccess(0);
+        return res;
     }
 
     @GetMapping(value = "/query_user_by_id")
-    public Map<String, Object> queryUserById(@RequestParam("id") int id) {
+    public Res queryUserById(@RequestParam("id") int id) {
 
         User user = userServiceImpl.queryUserById(id);
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", user);
-        map.put("success", 1);
-        map.put("code", "1001");
 
-        return map;
+        Res res = new Res();
+        res.setData(user);
+        res.setSuccess(0);
+        return res;
     }
 
     @PostMapping(value = "/insert_user")
-    public Map<String, Object> insertUser(@RequestParam("name") String name, @RequestParam("age") String age) {
+    public Res insertUser(@RequestParam("name") String name, @RequestParam("age") String age) {
 
         User user = new User();
         user.setName(name);
@@ -50,12 +51,13 @@ public class UserController {
 
         boolean flag = userServiceImpl.insertUser(user);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", null);
-        map.put("success", flag ? 1 : 0);
-        map.put("code", "1001");
+        Res res = new Res();
+        res.setSuccess(flag ? 0 : 1);
+        if (flag) {
+            res.setMessage("插入成功!");
+        }
 
-        return map;
+        return res;
     }
 
     @PostMapping(value = "/update_user")

@@ -1,12 +1,11 @@
 package com.example.websql.handler;
 
+import com.example.websql.Res;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 异常处理类
@@ -16,12 +15,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public Map<String, Object> exceptionHandler(HttpServletRequest request, Exception e) {
+    public Res exceptionHandler(HttpServletRequest request, Exception e) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("success", 1);
-        map.put("errMsg", e.getMessage());
+        Res res = new Res();
+        res.setSuccess(1);
+        res.setMessage(e.getMessage());
 
-        return map;
+        return res;
     }
 }
