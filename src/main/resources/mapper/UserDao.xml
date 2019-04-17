@@ -6,40 +6,40 @@
 <mapper namespace="com.example.websql.dao.UserDao">
     <select id="queryUser" resultType="com.example.websql.entity.User">
       SELECT *
-      from girl
+      from user
       order by id
       desc
     </select>
 
     <select id="queryUserById" resultType="com.example.websql.entity.User">
       SELECT *
-      from girl
+      from user
       where
-      id = #{userId}
+      user_id = #{userId}
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id"
             keyColumn="id" parameterType="com.example.websql.entity.User">
       INSERT INTO
-      girl(id, age, name)
+      user(user_id, name, email, password)
       VALUES
-      (#{id}, #{age}, #{name})
+      (#{user_id},#{name}, #{email}, #{password})
     </insert>
 
     <update id="updateUser" parameterType="com.example.websql.entity.User">
         UPDATE
-        girl
+        user
         <set>
             <if test="name!=null">name=#{name},</if>
-            <if test="age!=null">age=#{age}</if>
+            <if test="password!=null">password=#{password}</if>
         </set>
         WHERE
-        id=#{id}
+        user_id=#{user_id}
     </update>
     <delete id="deleteUser">
         DELETE FROM
-          girl
+          user
         WHERE
-          id=#{id}
+          user_id=#{user_id}
     </delete>
 </mapper>

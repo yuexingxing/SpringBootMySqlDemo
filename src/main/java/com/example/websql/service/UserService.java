@@ -8,11 +8,11 @@ import java.util.List;
 public interface UserService{
 
     List<User> queryUser();
-    User queryUserById(int userId);
+    User queryUserById(String userId);
 
     boolean insertUser(User user);
 
     boolean updateUser(User user);
 
-    boolean deleteUser(int id);
+    boolean deleteUser(String id);
 }

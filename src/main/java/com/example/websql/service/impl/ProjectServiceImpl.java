@@ -1,8 +1,8 @@
 package com.example.websql.service.impl;
 
-import com.example.websql.dao.UserDao;
-import com.example.websql.entity.User;
-import com.example.websql.service.UserService;
+import com.example.websql.dao.ProjectDao;
+import com.example.websql.entity.Project;
+import com.example.websql.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,31 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
-    private UserDao userDao;
+    private ProjectDao projectDao;
 
     @Override
-    public List<User> queryUser() {
+    public List<Project> getList() {
 
-        return userDao.queryUser();
+        return projectDao.getList();
     }
 
     @Override
-    public User queryUserById(String userId) {
-        return userDao.queryUserById(userId);
+    public Project getListById(String projectId) {
+        return projectDao.getListById(projectId);
     }
 
     @Transactional
     @Override
-    public boolean insertUser(User user) {
+    public boolean insert(Project user) {
 
         if (user == null) {
             return false;
         }
 
-        int effectNum = userDao.insertUser(user);
+        int effectNum = projectDao.insert(user);
         if (effectNum > 0) {
             return true;
         }
@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updateUser(User user) {
+    public boolean update(Project user) {
 
-        int effectNum = userDao.updateUser(user);
+        int effectNum = projectDao.update(user);
         if (effectNum > 0) {
             return true;
         }
@@ -56,9 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean deleteUser(String id) {
+    public boolean delete(String projectId) {
 
-        int effectNum = userDao.deleteUser(id);
+        int effectNum = projectDao.delete(projectId);
         if (effectNum > 0) {
             return true;
         }

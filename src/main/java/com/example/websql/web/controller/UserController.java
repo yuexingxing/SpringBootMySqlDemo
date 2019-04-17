@@ -3,6 +3,7 @@ package com.example.websql.web.controller;
 import com.example.websql.Res;
 import com.example.websql.entity.User;
 import com.example.websql.service.impl.UserServiceImpl;
+import com.example.websql.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
 
     //查询所有数据
-    @GetMapping(value = "/query_user")
+    @GetMapping(value = "/users")
     public Res queryUser() {
 
         List<User> list = userServiceImpl.queryUser();
@@ -31,10 +32,13 @@ public class UserController {
         return res;
     }
 
-    @GetMapping(value = "/query_user_by_id")
-    public Res queryUserById(@RequestParam("id") int id) {
+    /**
+     * url为路由形式
+     * */
+    @RequestMapping(value = "/users/{user_id}")
+    public Res queryUserById(@PathVariable String user_id) {
 
-        User user = userServiceImpl.queryUserById(id);
+        User user = userServiceImpl.queryUserById(user_id);
 
         Res res = new Res();
         res.setData(user);
@@ -42,46 +46,57 @@ public class UserController {
         return res;
     }
 
-    @PostMapping(value = "/insert_user")
-    public Res insertUser(@RequestParam("name") String name, @RequestParam("age") String age) {
-
-        User user = new User();
-        user.setName(name);
-        user.setAge(age);
-
-        boolean flag = userServiceImpl.insertUser(user);
+    @PostMapping(value = "/add")
+    public Res addUser(@RequestParam("name") String name, @RequestParam("password") String password) {
 
         Res res = new Res();
-        res.setSuccess(flag ? 0 : 1);
-        if (flag) {
-            res.setMessage("插入成功!");
+        if (name.isEmpty() || password.isEmpty()) {
+            res.setSuccess(1);
+            res.setMessage("姓名或密码不能为空");
+        } else {
+
+            User user = new User();
+            user.setUser_id(Utils.getUUID());
+            user.setName(name);
+            user.setPassword(password);
+
+            boolean flag = userServiceImpl.insertUser(user);
+            res.setSuccess(flag ? 0 : 1);
+            if (flag) {
+                res.setMessage("插入成功!");
+            } else {
+                res.setMessage("插入失败!");
+            }
         }
 
         return res;
     }
 
-    @PostMapping(value = "/update_user")
-    public Map<String, Object> insertUser(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("age") String age) {
+    @PostMapping(value = "/update")
+    public Res updateUser(@RequestParam("user_id") String user_id, @RequestParam("name") String name, @RequestParam("password") String password) {
 
         User user = new User();
-        user.setId(id);
+        user.setUser_id(user_id);
         user.setName(name);
-        user.setAge(age);
+        user.setPassword(password);
 
         boolean flag = userServiceImpl.updateUser(user);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", null);
-        map.put("success", flag ? 1 : 0);
-        map.put("code", "1001");
+        Res res = new Res();
+        res.setSuccess(flag ? 0 : 1);
+        if (flag) {
+            res.setMessage("更新成功!");
+        } else {
+            res.setMessage("用户不存在或更新失败");
+        }
 
-        return map;
+        return res;
     }
 
-    @PostMapping(value = "/delete_user")
-    public Map<String, Object> insertUser(@RequestParam("id") int id) {
+    @PostMapping(value = "/delete")
+    public Map<String, Object> insertUser(@RequestParam("user_id") String user_id) {
 
-        userServiceImpl.deleteUser(id);
+        userServiceImpl.deleteUser(user_id);
 
         Map<String, Object> map = new HashMap<>();
         map.put("data", null);

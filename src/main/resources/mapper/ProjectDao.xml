@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.websql.dao.ProjectDao">
+    <select id="getList" resultType="com.example.websql.entity.Project">
+      SELECT *
+      from project
+      order by id
+      desc
+    </select>
+
+    <select id="getListById" resultType="com.example.websql.entity.Project">
+      SELECT *
+      from project
+      where
+      project_id = #{projectId}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.example.websql.entity.Project">
+      INSERT INTO
+      project(id, age, name)
+      VALUES
+      (#{id}, #{age}, #{name})
+    </insert>
+
+    <update id="updateUser" parameterType="com.example.websql.entity.Project">
+        UPDATE
+        project
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="age!=null">age=#{age}</if>
+        </set>
+        WHERE
+        id=#{id}
+    </update>
+    <delete id="deleteUser">
+        DELETE FROM
+          project
+        WHERE
+          id=#{id}
+    </delete>
+</mapper>
