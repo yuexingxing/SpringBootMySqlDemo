@@ -13,9 +13,9 @@ public interface ProjectDao {
 
     Project getListById(String projectId);
 
-    int insert(Project user);
+    int add(Project project);
 
-    int update(Project user);
+    int update(Project project);
 
     int delete(String projectId);
 

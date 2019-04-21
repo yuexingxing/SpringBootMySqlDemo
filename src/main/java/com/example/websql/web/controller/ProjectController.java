@@ -3,6 +3,7 @@ package com.example.websql.web.controller;
 import com.example.websql.Res;
 import com.example.websql.entity.Project;
 import com.example.websql.service.ProjectService;
+import com.example.websql.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,12 +44,15 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/add")
-    public Res add(@RequestParam("name") String name, @RequestParam("age") String age) {
+    public Res add(@RequestParam("name") String name, @RequestParam("type") String type) {
 
         Project project = new Project();
+        project.setProject_id(Utils.getUUID());
         project.setName(name);
+        project.setType(type);
 
-        boolean flag = projectService.insert(project);
+        System.out.println(project.getProject_id());
+        boolean flag = projectService.add(project);
 
         Res res = new Res();
         res.setSuccess(flag ? 0 : 1);

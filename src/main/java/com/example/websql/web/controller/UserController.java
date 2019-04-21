@@ -1,11 +1,14 @@
 package com.example.websql.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.websql.Res;
 import com.example.websql.entity.User;
+import com.example.websql.redis.RedisUtil;
 import com.example.websql.service.impl.UserServiceImpl;
 import com.example.websql.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +29,8 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
         map.put("data", list);
 
+
+
         Res res = new Res();
         res.setData(map);
         res.setSuccess(0);
@@ -34,7 +39,7 @@ public class UserController {
 
     /**
      * url为路由形式
-     * */
+     */
     @RequestMapping(value = "/users/{user_id}")
     public Res queryUserById(@PathVariable String user_id) {
 
@@ -73,7 +78,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public Res updateUser(@RequestParam("user_id") String user_id, @RequestParam("name") String name, @RequestParam("password") String password) {
+    public Res update(@RequestParam("user_id") String user_id, @RequestParam("name") String name, @RequestParam("password") String password) {
 
         User user = new User();
         user.setUser_id(user_id);

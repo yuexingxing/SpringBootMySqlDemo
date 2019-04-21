@@ -28,13 +28,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public boolean insert(Project user) {
+    public boolean add(Project project) {
 
-        if (user == null) {
+        if (project == null) {
             return false;
         }
 
-        int effectNum = projectDao.insert(user);
+        int effectNum = projectDao.add(project);
         if (effectNum > 0) {
             return true;
         }

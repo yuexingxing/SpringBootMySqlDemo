@@ -18,12 +18,12 @@
       project_id = #{projectId}
     </select>
 
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id"
-            keyColumn="id" parameterType="com.example.websql.entity.Project">
+    <insert id="add" useGeneratedKeys="true" keyProperty="project_id"
+            keyColumn="project_id" parameterType="com.example.websql.entity.Project">
       INSERT INTO
-      project(id, age, name)
+      project(project_id, name, type)
       VALUES
-      (#{id}, #{age}, #{name})
+      (#{project_id}, #{name}, #{type})
     </insert>
 
     <update id="updateUser" parameterType="com.example.websql.entity.Project">

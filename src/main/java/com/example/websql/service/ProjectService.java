@@ -11,9 +11,9 @@ public interface ProjectService {
     List<Project> getList();
     Project getListById(String projectId);
 
-    boolean insert(Project user);
+    boolean add(Project project);
 
-    boolean update(Project user);
+    boolean update(Project project);
 
     boolean delete(String projectId);
 }
