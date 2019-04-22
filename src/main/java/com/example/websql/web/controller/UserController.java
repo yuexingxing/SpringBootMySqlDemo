@@ -1,14 +1,11 @@
 package com.example.websql.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.example.websql.Res;
 import com.example.websql.entity.User;
-import com.example.websql.redis.RedisUtil;
 import com.example.websql.service.impl.UserServiceImpl;
 import com.example.websql.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,35 +26,26 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
         map.put("data", list);
 
-
-
-        Res res = new Res();
-        res.setData(map);
-        res.setSuccess(0);
-        return res;
+        return Res.build(0, 0, "查询成功", map);
     }
 
     /**
      * url为路由形式
+     * 当没有查到数据时，返回仍为json对象格式
      */
     @RequestMapping(value = "/users/{user_id}")
     public Res queryUserById(@PathVariable String user_id) {
 
         User user = userServiceImpl.queryUserById(user_id);
 
-        Res res = new Res();
-        res.setData(user);
-        res.setSuccess(0);
-        return res;
+        return Res.build(0, 0, "查询成功", user == null ? new HashMap<>() : user);
     }
 
     @PostMapping(value = "/add")
     public Res addUser(@RequestParam("name") String name, @RequestParam("password") String password) {
 
-        Res res = new Res();
         if (name.isEmpty() || password.isEmpty()) {
-            res.setSuccess(1);
-            res.setMessage("姓名或密码不能为空");
+            return Res.build(1, 0, "姓名或密码不能为空", null);
         } else {
 
             User user = new User();
@@ -66,15 +54,8 @@ public class UserController {
             user.setPassword(password);
 
             boolean flag = userServiceImpl.insertUser(user);
-            res.setSuccess(flag ? 0 : 1);
-            if (flag) {
-                res.setMessage("插入成功!");
-            } else {
-                res.setMessage("插入失败!");
-            }
+            return Res.build(0, 0, flag ? "插入成功!" : "插入失败!", null);
         }
-
-        return res;
     }
 
     @PostMapping(value = "/update")
@@ -86,28 +67,13 @@ public class UserController {
         user.setPassword(password);
 
         boolean flag = userServiceImpl.updateUser(user);
-
-        Res res = new Res();
-        res.setSuccess(flag ? 0 : 1);
-        if (flag) {
-            res.setMessage("更新成功!");
-        } else {
-            res.setMessage("用户不存在或更新失败");
-        }
-
-        return res;
+        return Res.build(flag ? 0 : 1, 0, flag ? "更新成功" : "用户不存在或更新失败", null);
     }
 
     @PostMapping(value = "/delete")
-    public Map<String, Object> insertUser(@RequestParam("user_id") String user_id) {
+    public Res insertUser(@RequestParam("user_id") String user_id) {
 
-        userServiceImpl.deleteUser(user_id);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", null);
-        map.put("success", 1);
-        map.put("code", "1001");
-
-        return map;
+        boolean flag = userServiceImpl.deleteUser(user_id);
+        return Res.build(flag ? 0 : 1, 0, flag ? "删除成功" : "删除失败", null);
     }
 }

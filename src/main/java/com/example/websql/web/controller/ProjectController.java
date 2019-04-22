@@ -26,21 +26,14 @@ public class ProjectController {
         Map<String, Object> map = new HashMap<>();
         map.put("data", list);
 
-        Res res = new Res();
-        res.setData(map);
-        res.setSuccess(0);
-        return res;
+        return Res.build(0, 0, "查询成功", map);
     }
 
     @RequestMapping(value = "/projects/{project_id}")
-    public Res queryUserById(@PathVariable String project_id) {
+    public Res queryById(@PathVariable String project_id) {
 
         Project project = projectService.getListById(project_id);
-
-        Res res = new Res();
-        res.setData(project);
-        res.setSuccess(0);
-        return res;
+        return Res.build(0, 0, "查询成功", project == null ? new HashMap<>() : project);
     }
 
     @PostMapping(value = "/add")
@@ -51,16 +44,8 @@ public class ProjectController {
         project.setName(name);
         project.setType(type);
 
-        System.out.println(project.getProject_id());
         boolean flag = projectService.add(project);
-
-        Res res = new Res();
-        res.setSuccess(flag ? 0 : 1);
-        if (flag) {
-            res.setMessage("插入成功!");
-        }
-
-        return res;
+        return Res.build(0, 0, flag ? "插入成功!" : "插入失败!", null);
     }
 
     @PostMapping(value = "/update")
@@ -71,28 +56,13 @@ public class ProjectController {
         project.setName(name);
 
         boolean flag = projectService.update(project);
-
-        Res res = new Res();
-        res.setSuccess(flag ? 0 : 1);
-        if (flag) {
-            res.setMessage("更新成功!");
-        } else {
-            res.setMessage("用户不存在或更新失败");
-        }
-
-        return res;
+        return Res.build(flag ? 0 : 1, 0, flag ? "更新成功" : "更新失败", null);
     }
 
     @PostMapping(value = "/delete")
-    public Map<String, Object> delete(@RequestParam("project_id") String project_id) {
+    public Res delete(@RequestParam("project_id") String project_id) {
 
-        projectService.delete(project_id);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", null);
-        map.put("success", 1);
-        map.put("code", "1001");
-
-        return map;
+        boolean flag = projectService.delete(project_id);
+        return Res.build(flag ? 0 : 1, 0, flag ? "删除成功" : "删除失败", null);
     }
 }

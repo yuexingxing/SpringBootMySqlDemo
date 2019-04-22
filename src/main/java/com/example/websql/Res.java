@@ -1,11 +1,26 @@
 package com.example.websql;
 
-public class Res{
+public class Res {
 
     private int success;
     private int code;
     private Object data;
     private String message;
+
+    public Res() {
+
+    }
+
+    public Res(int success, int code, String message, Object object) {
+        this.success = success;
+        this.code = code;
+        this.message = message;
+        this.data = object;
+    }
+
+    public static Res build(int success, int code, String message, Object object) {
+        return new Res(success, code, message, object);
+    }
 
     public Object getData() {
         return data;

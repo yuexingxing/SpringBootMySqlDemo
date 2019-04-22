@@ -17,10 +17,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Res exceptionHandler(HttpServletRequest request, Exception e) {
 
-        Res res = new Res();
-        res.setSuccess(1);
-        res.setMessage(e.getMessage());
-
-        return res;
+        return Res.build(1, 0, e.getMessage(), request.getRequestURL());
     }
 }

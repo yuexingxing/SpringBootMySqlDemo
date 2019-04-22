@@ -9,6 +9,7 @@ import com.example.websql.service.ProjectService;
 import com.example.websql.service.impl.UserServiceImpl;
 import com.example.websql.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 
@@ -40,5 +41,11 @@ public class TestController {
         Res res = new Res();
         res.setSuccess(0);
         return res;
+    }
+
+    @RequestMapping("/index")
+    public String index(ModelMap map) {
+        map.addAttribute("resource", "");
+        return "index";
     }
 }
